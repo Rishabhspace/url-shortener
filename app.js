@@ -10,30 +10,15 @@ mongoose.connect(process.env.MONGODB, {
   useUnifiedTopology: true,
 });
 
-var db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function () {
-  console.log("We are connected");
+const shortUrlSchema = new mongoose.Schema({
+  full: { type: String },
+  short: { type: String, default: shortId.generate },
+  clicks: { type: Number, default: 0 },
 });
 
-const shortUrlSchema = new mongoose.Schema({
-  full: {
-    type: String,
-    required: true,
-  },
-  short: {
-    type: String,
-    required: true,
-    default: shortId.generate,
-  },
-  clicks: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
-});
 const ShortUrl = mongoose.model("ShortUrl", shortUrlSchema);
 
+app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 
@@ -42,10 +27,18 @@ app.get("/", async (req, res) => {
   res.render("index", { shortUrls: shortUrls });
 });
 
-app.post("/shortUrls", async (req, res) => {
+app.post("/", async (req, res) => {
   await ShortUrl.create({ full: req.body.fullUrl });
 
   res.redirect("/");
+});
+
+app.post("/searchurl", async (req, res) => {
+  const search = req.body.url;
+  const shortUrls = await ShortUrl.findOne({ full: search });
+  if (shortUrls === null || shortUrls === "") {
+    res.render("error");
+  } else res.render("search", { shortUrls: shortUrls });
 });
 
 app.get("/:shortUrl", async (req, res) => {

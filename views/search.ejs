@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="maincontainer">
+        <h1>URL Shortener</h1>
+        <div id="short-url-container">
+            <p>Here's your shortened URL:</p>
+            <div id="short-url">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Full URL</th>
+                            <th>Short URL</th>
+                            <th>No. of Clicks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="<%= shortUrls.full %>">
+                                    <%= shortUrls.full %>
+                                </a></td>
+                            <td><a href="<%= shortUrls.short %>">
+                                    <%= shortUrls.short %>
+                                </a></td>
+                            <td>
+                                <%= shortUrls.clicks %>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+</body>
+
+</html>
